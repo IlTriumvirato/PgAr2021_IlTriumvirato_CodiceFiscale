@@ -8,4 +8,8 @@ public class DatiPersone {
 	public DatiPersone() {
 		
 	}
+	
+	public DatiPersone(ArrayList<Persona> arrayPersone) {
+		this.arrayPersone=arrayPersone;
+	}
 }
