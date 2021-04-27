@@ -1,4 +1,3 @@
-module PgAr2021_IlTriumvirato_CodiceFiscale {
+module CodiceFiscale {
 	requires java.xml;
-	
 }
