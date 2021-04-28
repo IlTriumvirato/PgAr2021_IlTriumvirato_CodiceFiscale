@@ -3,9 +3,7 @@ package it.unibs.fp.codicefiscale;
 import java.time.LocalDate;
 
 public class Persona {
-	private final static char FILLER_CHAR='X';
-	private final static int GENDER_NUMBER_TO_ADD=40;
-	private final static char[] MONTH_CHARS= {'A','B','C','D','E','H','L','M','P','R','S','T'};
+
 	private int id;
 	private String nome;
 	private String cognome;
@@ -23,7 +21,9 @@ public class Persona {
 		this.data_nascita = data_nascita;
 		codiceAssente=false;
 	}
-	
+	public boolean getCodiceAssente() {
+		return codiceAssente;
+	}
 	public Persona(int id) {
 		this.id=id;
 	}
@@ -73,14 +73,12 @@ public class Persona {
 	}
 	
 	
-	private static boolean isVowel(char letter) {
-		return letter=='A'||letter=='E'||letter=='I'||letter=='O'||letter=='U';
-	}
+
 	
 	private static String getVowellessString(String s) {
 		StringBuffer sb=new StringBuffer("");
 		for(int i=0;i<s.length();i++) {
-			if(!isVowel(s.charAt(i))) {
+			if(!ElaboraCF.isVowel(s.charAt(i))) {
 				sb.append(s.charAt(i));
 			}
 		}
@@ -110,14 +108,14 @@ public class Persona {
 				while(counter<3) {
 					
 					if(i<nome.length()){
-						if(isVowel(nome.charAt(i))) {
+						if(ElaboraCF.isVowel(nome.charAt(i))) {
 							tln.append(nome.charAt(i));
 							counter++;
 						}
 						
 						i++;
 					}else {
-						tln.append(FILLER_CHAR);
+						tln.append(Constants.FILLER_CHAR);
 						counter++;
 					}		
 					
@@ -150,14 +148,14 @@ public class Persona {
 			while(counter<3) {
 				
 				if(i<cognome.length()){
-					if(isVowel(cognome.charAt(i))) {
+					if(ElaboraCF.isVowel(cognome.charAt(i))) {
 						tls.append(cognome.charAt(i));
 						counter++;
 					}
 					
 					i++;
 				}else {
-					tls.append(FILLER_CHAR);
+					tls.append(Constants.FILLER_CHAR);
 					counter++;
 				}		
 				
@@ -193,12 +191,12 @@ public class Persona {
 		cf.append(stringaAnno);
 		
 		//mese di nascita
-		cf.append(MONTH_CHARS[data_nascita.getMonthValue()-1]);
+		cf.append(Constants.MONTH_CHARS[data_nascita.getMonthValue()-1]);
 		
 		
 		//dato composito costituito dal giorno di nascita, al quale viene aggiunto 40 in caso di sesso femminile, in modo da utilizzare un carattere 
 		int giornoNascita=data_nascita.getDayOfMonth();
-		if(sesso=='F')giornoNascita+=GENDER_NUMBER_TO_ADD;
+		if(sesso=='F')giornoNascita+=Constants.GENDER_NUMBER_TO_ADD;
 		
 		if(giornoNascita<10) {
 			cf.append("0"+giornoNascita);
@@ -208,35 +206,14 @@ public class Persona {
 		
 		
 		//comune(testing)
-		cf.append(Constants.getCodiceComuneByNome(CodiceFiscaleMain.dc, this.comune_nascita));
+		cf.append(ElaboraCF.getCodiceComuneByNome(this.comune_nascita));
 		
-		cf.append(calcolaCarattereControllo(new String(cf)));
+		cf.append(ElaboraCF.calcolaCarattereControllo(new String(cf)));
 		
 		this.codiceFiscale=new String(cf);
 	}
 	
-	//abstract for now
-	private char calcolaCarattereControllo(String cfIncompleto) {
-		if(cfIncompleto.length()==15) {
-			int somma=0;
-			for(int i=1;i<15;i+=2) {
-				somma+=Constants.getMappaPari().get(cfIncompleto.charAt(i));
-			}
-			
-			for(int i=0;i<15;i+=2) {
-				somma+=Constants.getMappaDispari().get(cfIncompleto.charAt(i));
-			}
-			
-
-			char codiceControllo=(char)('A'+somma%Constants.DIVISORE_CARATTERE_CONTROLLO);
-			return codiceControllo;
-			
-		}else {
-			return ' ';//errore
-		}
-		
-	}
-
+	
 	public String getCodiceFiscale() {
 		
 		return codiceFiscale;

@@ -10,81 +10,54 @@ public class CodiceFiscaleMain {
 	public static ArrayList<Persona> dp;
 	public static ArrayList<String>  dcf;
 	public static ArrayList<Comune>  dc;
-	public static ArrayList<String>  invalidi;
+	public static CodiciProblematici listaErrati;
+	
+	public static void provideProgramInformation() {
+		System.out.println(Constants.INFORMATION_MESSAGE);
+	}
 	
 	public static void main(String[] args) throws XMLStreamException {
 		
-		dp=new ArrayList<Persona>();
-		dcf=new ArrayList<String>();
-		dc=new ArrayList<Comune>();
-		
-		
-		
+		//inizializzazione
+		//give program's inner workings information
+		//dataInput()
+		//dataProcessing()
+		//dataOutput()
 		dp=InputOutputXML.prendiInInputPersone("xmlInputFiles/inputPersone.xml");
 		dcf=InputOutputXML.prendiInInputCodiciFiscali("xmlInputFiles/codiciFiscali.xml");
 		dc=InputOutputXML.prendiInInputComuni("xmlInputFiles/comuni.xml");
 		
-		dp.get(1).stampaNomeCognome();
-		System.out.println(dp.get(1).getSesso());
-		System.out.println(dp.get(1).getComune_nascita());
-		System.out.println(dp.get(1).getData_nascita());
-
-		
-		
-		
-		dp.get(1).generaCodiceFiscale();
-		//quiSystem.out.println(dp.get(1).getCodiceFiscale());
+		Maps.inizializzaMappe(dc);
+		//Maps.inizializzaMappaComuniDalCodice(dc);
 		
 		for(int i=0; i<dp.size(); i++) {
 			dp.get(i).generaCodiceFiscale();
 		}
 		
-		
-		/*quifor(int i=0;i<4;i++) {
-			System.out.println("Codice nuovo: "+dcf.get(i));			
-		}
-
-		for(int i=0;i<4;i++) {
-			System.out.println("Comune di nome: "+dc.get(i).getNome()+"\n e codice "+dc.get(i).getCodice());			
-		}
-		
-		//System.out.println("TROVATO: "+dcf.getCodici().get(0));
+		//se CodiceAssente=false allora c'è il codice 
+		// contiene cf delle persone non presenti in dp
+		ArrayList<String> invalidiESpaiati=ElaboraCF.controllaPresenze(dp, dcf);
+		//controlla quali codici sono errati
+		listaErrati=ElaboraCF.selezioneAnomalie(invalidiESpaiati);
 		
 		/*
-			dobbiamo prendere i dati da persone.xml, comuni.xml, 
-			
-			
-			input le persone, input i comuni e generiamo i codici
-			
-			poi
-			
-			verificare la validità di quelli
-			
-			
-			+ eventuali javadoc        un sacco di controlli a prova di idiota
-			
-			
-			
-		*/
-		
-		
-		
-		Constants.controllaPresenze(dp, dcf);
-		
-		
-		/*for(int i=0; i<dp.size(); i++) {
-			System.out.println(dp.get(i).isCodiceAssente());
+		//System.out.println(listaErrati.getCodiciSpaiati().get(17));
+		for(int i=0;i<15;i++) {
+			//come mai viene fatto i<15 invece di puntare direttamente al size?
+			//perché questo for era solo un piccolo test
+			if(i<invalidiESpaiati.size()) {
+				//System.out.println(listaErrati.getCodiciInvalidi().get(i));
+			}
 		}*/
 		
-		boolean r;
-		for(int i=0; i<dcf.size(); i++) {
-			r= Constants.controllaCodice(dcf.get(i));
-			if(r==false) {
-				//metto il codice in invalidi
-			}
+		
+		//metodoDiOutputDiApu(dp,listaErrati.getCodiciInvalidi(),listaErrati.getCodiciSpaiati());
+		try {
+			InputOutputXML.OutputXML(dp, listaErrati.getCodiciInvalidi(),listaErrati.getCodiciSpaiati());
+		}catch (Exception e) {
+			// TODO: handle exception
 		}
-		
-		
+
 	}
 
 }
