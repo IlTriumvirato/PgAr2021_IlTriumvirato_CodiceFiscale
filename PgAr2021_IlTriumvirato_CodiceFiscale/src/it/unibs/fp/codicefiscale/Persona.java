@@ -72,24 +72,13 @@ public class Persona {
 		this.data_nascita = data_nascita;
 	}
 	
-	
 
-	
-	private static String getVowellessString(String s) {
-		StringBuffer sb=new StringBuffer("");
-		for(int i=0;i<s.length();i++) {
-			if(!ElaboraCF.isVowel(s.charAt(i))) {
-				sb.append(s.charAt(i));
-			}
-		}
-		return new String(sb);
-	}
-	
+
 	
 	private String getThreeLetterName() {
 		StringBuffer tln=new StringBuffer("");
 		
-		String vowelLessName=getVowellessString(nome);
+		String vowelLessName=DataProcessor.getVowellessString(nome);
 		
 		if(vowelLessName.length()==3) {
 			
@@ -108,7 +97,7 @@ public class Persona {
 				while(counter<3) {
 					
 					if(i<nome.length()){
-						if(ElaboraCF.isVowel(nome.charAt(i))) {
+						if(DataProcessor.isVowel(nome.charAt(i))) {
 							tln.append(nome.charAt(i));
 							counter++;
 						}
@@ -132,7 +121,7 @@ public class Persona {
 		
 		StringBuffer tls=new StringBuffer("");
 		
-		String vowelLessSurname=getVowellessString(cognome);
+		String vowelLessSurname=DataProcessor.getVowellessString(cognome);
 		
 			
 		if(vowelLessSurname.length()>=3){
@@ -148,7 +137,7 @@ public class Persona {
 			while(counter<3) {
 				
 				if(i<cognome.length()){
-					if(ElaboraCF.isVowel(cognome.charAt(i))) {
+					if(DataProcessor.isVowel(cognome.charAt(i))) {
 						tls.append(cognome.charAt(i));
 						counter++;
 					}
@@ -206,9 +195,10 @@ public class Persona {
 		
 		
 		//comune(testing)
-		cf.append(ElaboraCF.getCodiceComuneByNome(this.comune_nascita));
+		cf.append(Maps.getMappaCodiciComuniDalNome().get(this.comune_nascita));
 		
-		cf.append(ElaboraCF.calcolaCarattereControllo(new String(cf)));
+		char carattereDiControllo=DataProcessor.calcolaCarattereControllo(new String(cf));
+		cf.append(carattereDiControllo);
 		
 		this.codiceFiscale=new String(cf);
 	}

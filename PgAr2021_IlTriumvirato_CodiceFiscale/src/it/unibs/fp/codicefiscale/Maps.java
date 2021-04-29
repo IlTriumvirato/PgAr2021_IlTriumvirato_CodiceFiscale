@@ -5,23 +5,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Maps { //this class is used for more complex generated data that is used as constants
-	private static Map<String,String> mappaComuniDalCodice;
+	private static Map<String,String> mappaCodiciComuniDalNome;
 	private static Map<Character,Integer> mappaGiorniMesi;
 	private static Map<Character,Integer> mappaPari;
 	private static Map<Character,Integer> mappaDispari;
 	
 	public static void inizializzaMappe(ArrayList<Comune> dc) {
-		inizializzaMappaComuniDalCodice(dc);
+		mappaCodiciComuniDalNome=inizializzaMappaCodiciComuniDalNome(dc);
 		mappaGiorniMesi=inizializzaMappaGiorniMesi();
 		mappaPari=inizializzaMappaPari();
 		mappaDispari=inizializzaMappaDispari();
 	}
 	
-	public static Map<String,String> inizializzaMappaComuniDalCodice(ArrayList<Comune> dc) {
+	public static Map<String,String> inizializzaMappaCodiciComuniDalNome(ArrayList<Comune> dc) {
 		Map<String,String> mappa=new HashMap<String,String>();
 		
 		for(int i=0;i<dc.size();i++) {
-			mappa.put(dc.get(i).getNome(), dc.get(i).getNome());
+			mappa.put(dc.get(i).getNome(), dc.get(i).getCodice());
 		}
 		
 		return mappa;
@@ -39,6 +39,7 @@ public class Maps { //this class is used for more complex generated data that is
 	
 	public static Map<Character,Integer> inizializzaMappaPari() {
 		Map <Character, Integer> mappaPari = new HashMap <Character, Integer>( );
+		
 		
 		for(int i=0;i<=9;i++) {
 			mappaPari.put((char)(i+'0'), i);
@@ -86,6 +87,7 @@ public class Maps { //this class is used for more complex generated data that is
 		mappaPari.put('Y', 24);
 		mappaPari.put('Z', 25);*/
 		
+		
 		return mappaPari;
 	}
 	
@@ -131,22 +133,18 @@ public class Maps { //this class is used for more complex generated data that is
 		
 		return mappaDispari;
 	}
-
 	
-	public static Map<String, String> getMappaComuniDalCodice() {
-		return mappaComuniDalCodice;
+	public static Map<String, String> getMappaCodiciComuniDalNome() {
+		return mappaCodiciComuniDalNome;
 	}
-
 	
 	public static Map<Character, Integer> getMappaGiorniMesi() {
 		return mappaGiorniMesi;
 	}
-
 	
 	public static Map<Character, Integer> getMappaPari() {
 		return mappaPari;
 	}
-
 
 	public static Map<Character, Integer> getMappaDispari() {
 		return mappaDispari;

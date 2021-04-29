@@ -12,13 +12,10 @@ public class CodiciProblematici {
 	}
 	
 
-	
 	public CodiciProblematici(ArrayList<String> codiciInvalidi, ArrayList<String> codiciSpaiati) {
 		this.codiciInvalidi = codiciInvalidi;
 		this.codiciSpaiati = codiciSpaiati;
 	}
-
-
 
 	public ArrayList<String> getCodiciInvalidi() {
 		return codiciInvalidi;

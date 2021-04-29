@@ -195,10 +195,8 @@ public class InputOutputXML {
 		return dc;
 		
 	}
-	//public static final String xmlFilePath = "C:\\Users\\apurb\\Desktop\\PgAr2021_IlTriumvirato_CodiceFiscale-main\\PgAr2021_IlTriumvirato_CodiceFiscale\\xmlInputFiles\\
 	
 	
-	//xmlOutputFiles/output.xml
 	public static void OutputXML(ArrayList<Persona> dp,ArrayList<String> listaInvlidi,ArrayList<String> listaSpaiati) throws Exception {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db=null;
@@ -305,7 +303,7 @@ public class InputOutputXML {
 		tf.setOutputProperty(OutputKeys.METHOD, "xml");
 		tf.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
 		DOMSource source = new DOMSource(doc);
-		StreamResult result = new StreamResult(new File("xmlOutputFiles/output.xml"));
+		StreamResult result = new StreamResult(new File(Constants.PATH_RELATIVO_OUTPUT));
 
 		// Output to console for testing
 		//StreamResult result = new StreamResult(System.out);
