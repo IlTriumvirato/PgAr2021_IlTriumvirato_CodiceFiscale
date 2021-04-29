@@ -7,57 +7,50 @@ import javax.xml.stream.XMLStreamException;
 
 public class CodiceFiscaleMain {
 	
-	public static ArrayList<Persona> dp;
-	public static ArrayList<String>  dcf;
-	public static ArrayList<Comune>  dc;
-	public static CodiciProblematici listaErrati;
-	
+	/** fornisce una breve spiegazione del funzionamento del programma per consentire all'eventuale utente ignaro di utilizzarlo
+	 */
 	public static void provideProgramInformation() {
 		System.out.println(Constants.INFORMATION_MESSAGE);
 	}
 	
+	/** prende in input i dati relativi a persone, comuni e codici fiscali usando l'apposita classe InputOutputXML, dopodiché li passa all'elaboratore dei dati
+	 */
+	public static void dataInput() {
+		ArrayList<Persona> datiPersone=InputOutputXML.prendiInInputPersone(Constants.PATH_RELATIVO_PERSONE);
+		ArrayList<String> datiCodiciFiscali=InputOutputXML.prendiInInputCodiciFiscali(Constants.PATH_RELATIVO_CODICI_FISCALI);
+		ArrayList<Comune> datiComuni=InputOutputXML.prendiInInputComuni(Constants.PATH_RELATIVO_COMUNI);
+		
+		DataProcessor.setInitialData(datiPersone, datiCodiciFiscali, datiComuni);
+	}
+	
+	/** esegue l'output dei dati elaborati da DataProcessor, chiamando la classe InputOutputXML
+	 */
+	private static void dataOutput() {
+		
+		try {
+			InputOutputXML.OutputXML(DataProcessor.getListaPersone(), DataProcessor.getListaErrati().getCodiciInvalidi(),DataProcessor.getListaErrati().getCodiciSpaiati());
+		}catch (Exception e) {
+			
+		}
+	}
+	
+	/**
+	 * Metodo main, fa eseguire il programma avviando le quattro fasi di informazione per l'utente, input, elaborazione e output
+	 * @param args
+	 * @throws XMLStreamException
+	 */
 	public static void main(String[] args) throws XMLStreamException {
 		
-		//inizializzazione
-		//give program's inner workings information
-		//dataInput()
-		//dataProcessing()
-		//dataOutput()
-		dp=InputOutputXML.prendiInInputPersone("xmlInputFiles/inputPersone.xml");
-		dcf=InputOutputXML.prendiInInputCodiciFiscali("xmlInputFiles/codiciFiscali.xml");
-		dc=InputOutputXML.prendiInInputComuni("xmlInputFiles/comuni.xml");
+		provideProgramInformation();
 		
-		Maps.inizializzaMappe(dc);
-		//Maps.inizializzaMappaComuniDalCodice(dc);
+		dataInput();
+				
+		DataProcessor.elaboraDati();
 		
-		for(int i=0; i<dp.size(); i++) {
-			dp.get(i).generaCodiceFiscale();
-		}
+		dataOutput();
 		
-		//se CodiceAssente=false allora c'è il codice 
-		// contiene cf delle persone non presenti in dp
-		ArrayList<String> invalidiESpaiati=ElaboraCF.controllaPresenze(dp, dcf);
-		//controlla quali codici sono errati
-		listaErrati=ElaboraCF.selezioneAnomalie(invalidiESpaiati);
-		
-		/*
-		//System.out.println(listaErrati.getCodiciSpaiati().get(17));
-		for(int i=0;i<15;i++) {
-			//come mai viene fatto i<15 invece di puntare direttamente al size?
-			//perché questo for era solo un piccolo test
-			if(i<invalidiESpaiati.size()) {
-				//System.out.println(listaErrati.getCodiciInvalidi().get(i));
-			}
-		}*/
-		
-		
-		//metodoDiOutputDiApu(dp,listaErrati.getCodiciInvalidi(),listaErrati.getCodiciSpaiati());
-		try {
-			InputOutputXML.OutputXML(dp, listaErrati.getCodiciInvalidi(),listaErrati.getCodiciSpaiati());
-		}catch (Exception e) {
-			// TODO: handle exception
-		}
 
 	}
+
 
 }
