@@ -1,5 +1,0 @@
-package arnaldo.anno2021.triumvirato.codicefiscale;
-
-public class ElaboraInputOutput {
-	
-}
