@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes","u":"allclasses-index.html"},{"p":"it.unibs.fp.codicefiscale","l":"Persona"}];updateSearchResults();
